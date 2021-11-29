@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+
+// components
+import SideMenu from './components/SideMenu';
+import Header from './components/Header';
+
+// theme
+import { ThemeProvider } from '@mui/private-theming';
+import { theme } from './hooks/useTheme';
+
+// makeStyles
+import {useStyles} from './hooks/useStyles'
+
+// to default style
+import { CssBaseline } from '@mui/material';
 
 function App() {
+  const classes = useStyles();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <SideMenu />
+      <div className={classes.appMain}> 
+        <Header />
+      </div>
+      <CssBaseline />
+    </ThemeProvider>
   );
 }
 
