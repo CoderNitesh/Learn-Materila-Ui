@@ -16,8 +16,9 @@ const Header = (props) => {
             position='static' 
             justifycontent="center"
             alignitems="center"
+            className={classes.appBar}
         >
-            <Toolbar className={classes.toolBar}>
+            <Toolbar>
                 <Grid container >
                     <Grid item>
                         <InputBase 
