@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 
 // material-ui component
 import { Grid } from '@mui/material';
@@ -6,7 +6,6 @@ import { Grid } from '@mui/material';
 
 // custom hook
 import {useForm, Form} from '../../hooks/useForm';
-// import { useStyles } from '../../hooks/useStyles';
 
 // wrapper for TextField
 import Input from '../../components/control/Input'
@@ -14,6 +13,9 @@ import RadioWrapper from '../../components/control/Radio'
 import Select from '../../components/control/Select'
 import CheckBox from '../../components/control/CheckBox';
 import DatePicker from '../../components/control/DatePicker';
+import Button from '../../components/control/Button';
+import { insertEmployee } from '../../utils/localStorageOpration';
+
 // values
 const initalValues = {
     fullName: '',
@@ -40,24 +42,56 @@ const selectOptions = [
     {label: 'Android Devloper', value: 'android_devloper'},
 ]
 
-const EmployeesFrom = () => {
-    const {values: employDetails, handleChange} = useForm(initalValues)
-    // const classes = useStyles()
-   
-    useEffect(()=>{
+const EmployeesForm = () => {
+    const {values: employDetails, handleChange, errors, setErrors, resetForm} = useForm(initalValues, true)
+    
+    const validate = () => {
+        const error = {}
+        if(employDetails.fullName === ""){
+            error.fullName='FullName is Required*'
+        }
+        if(employDetails.email !== '' && !( /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(employDetails.email)){
+            error.email='Please Enter Valide Email Id*'
+        }
+        if(employDetails.mobile === ''){
+            error.mobile='Mobile Number is Required*'
+        }else{
+            const mobileNumber = parseInt(employDetails.mobile)
+            if(!(/^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[789]\d{9}$/).test(mobileNumber)) {
+                error.mobile='Should be greater then 9 digits*'
+            }
+        }
+        if(employDetails.departmentId === ""){
+            error.departmentId='Department is Required*'
+        }
+        setErrors({...error})
 
-    },[]);
-    console.log(employDetails)
+        return Object.keys(error).length === 0? false: true 
+    }
+
+    
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if(validate(employDetails)){
+            console.log("Please fill the form")
+        }else{
+            console.log(employDetails)
+            insertEmployee(employDetails)
+            resetForm();
+        }
+    }
+
     return (
         <Form >
             <Grid container>
                 <Grid item xs={6}>
                     <Input 
                         variant='outlined'
-                        label='Full Name'
+                        label='Full Name*'
                         value={employDetails.fullName}
                         name='fullName'
                         onChange={handleChange}
+                        errorText={errors.fullName}
                     />
                     <Input 
                         variant='outlined'
@@ -65,13 +99,15 @@ const EmployeesFrom = () => {
                         value={employDetails.email}
                         name='email'
                         onChange={handleChange}
+                        errorText={errors.email}
                     />
                     <Input
                         variant='outlined'
-                        label='Mobile'
+                        label='Mobile*'
                         value={employDetails.mobile}
                         name='mobile'
                         onChange={handleChange}
+                        errorText={errors.mobile}
                     />
                     <Input
                         variant='outlined'
@@ -90,11 +126,12 @@ const EmployeesFrom = () => {
                         radioOptions={radioOptions}
                     />
                     <Select
-                        label='Department'
+                        label='Department*'
                         value={employDetails.departmentId}
                         name='departmentId'
                         options={selectOptions}
                         onChange={handleChange}
+                        errorText={errors.departmentId}
                     />
                     <CheckBox
                         label='Permanent Employee'
@@ -108,12 +145,23 @@ const EmployeesFrom = () => {
                         value={employDetails.hireDate}
                         onChange={handleChange}
                     />
+                    <div>
+                        <Button 
+                            text="Submit"
+                            type='submit'
+                            variant='contained'
+                            size='medium'
+                            onClick={handleSubmit}
+                        />
+                    </div>
                 </Grid>
-                {/* <Grid item xs={6}>
+                {/* <Grid item xs={12}
+                    
+                >
                 </Grid> */}
             </Grid>
         </Form>
     )
 }
 
-export default EmployeesFrom
+export default EmployeesForm

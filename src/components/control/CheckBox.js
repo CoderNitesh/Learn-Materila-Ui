@@ -1,13 +1,13 @@
 import React from 'react'
-import {FormControlLabel, Checkbox as MuiCheckBox, FormControl} from '@mui/material'
-const CheckBox = ({label, name, onChange, value}) => {
 
-    const convertToDefEventPara = (name, value) => ({
-        target: {
-            name,
-            value
-        }
-    })
+// components
+import {FormControlLabel, Checkbox as MuiCheckBox, FormControl} from '@mui/material'
+
+// utils
+import {convertToDefEventPara} from '../../utils/convertToDefEventPara'
+
+const CheckBox = ({label, name, onChange, value}) => {
+    
     return (
         <FormControl>
             <FormControlLabel 

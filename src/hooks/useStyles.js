@@ -37,11 +37,16 @@ export const useStyles = makeStyles(theme => ({
                 marginRight: "8px"
             }
         },
-        btnRoot: {
-            backgroundColor: 'green'
-        },
-        btnLabel: {
-            backgroundColor: 'red'
+        // btnRoot: {
+        //     backgroundColor: 'green'
+        // },
+        // btnLabel: {
+        //     backgroundColor: 'red'
+        // },
+        buttonSubmit: {
+            display: "flex",
+            alignItems: 'center',
+            justifyContent: 'center',
         }
     })
 )

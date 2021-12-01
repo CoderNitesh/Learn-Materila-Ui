@@ -1,18 +1,15 @@
 import React from 'react'
 
+// components
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import MuiDatePicker from '@mui/lab/DatePicker';
-
 import { TextField } from '@mui/material';
 
+// utils
+import {convertToDefEventPara} from '../../utils/convertToDefEventPara'
+
 const DatePicker = ({label, name, onChange, value}) => {
-    const convertToDefEventPara = (name, value) => ({
-        target: {
-            name,
-            value
-        }
-    })
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
             <MuiDatePicker 

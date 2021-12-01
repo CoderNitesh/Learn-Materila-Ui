@@ -9,7 +9,6 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import SearchIcon from '@mui/icons-material/Search';
 
 const Header = (props) => {
-    console.log(props)
     const classes = useStyles();
     return (
         <AppBar 

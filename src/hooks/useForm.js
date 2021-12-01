@@ -1,17 +1,29 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@mui/styles';
 
-export const useForm = (initialValues) => {
-    const [values, setValues] = useState(initialValues)
-    
+export const useForm = (initialValues, validateOnChange=false) => {
+    const [values, setValues] = useState(initialValues);
+    const [errors, setErrors] = useState({})
+
     const handleChange = (e) => {
         const {name, value} = e.target
         setValues({...values, [name]: value})
+        if(validateOnChange){
+            
+        }
+    }
+
+    const resetForm = () => {
+        setValues(initialValues);
+        setErrors({});
     }
 
     return {
         values,
         setValues,
+        errors,
+        setErrors,
+        resetForm,
         handleChange
     }
 }
@@ -27,7 +39,15 @@ const useStyles = makeStyles(theme => ({
             display: 'flex',
             alignItmes: 'center', 
             justifyContent: 'center',
-            padding: "20px"
+            padding: "15px"
+        },
+        // '& .MuiGrid-grid-xs-12':{
+        //     display: "flex",
+        //     justifyContent: "center"
+        // },
+        '& .MuiButton-contained':{
+            letterSpacing: "1px",
+            margin: '0px 7px'
         }
     }
 })

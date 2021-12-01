@@ -1,7 +1,13 @@
 import { FormControl, InputLabel, MenuItem, Select as MuiSelect } from '@mui/material'
 import React from 'react'
 
-const Select = ({name, label, onChange, options, value}) => {
+const Select = ({name, label, onChange, options, value, errorText=null}) => {
+
+    // we pass this in MuiSelect only if the errorText is null
+    const configError = {
+        error:true, 
+        helpertext:errorText
+    }
     return (
         <FormControl variant='standard'>
             <InputLabel>{label}</InputLabel>
@@ -9,6 +15,7 @@ const Select = ({name, label, onChange, options, value}) => {
                 name={name}
                 onChange={onChange}
                 value={value}
+                {...(errorText && configError)}
             >
                 {
                     options.map(option => (
