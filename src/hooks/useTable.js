@@ -42,12 +42,13 @@ const useTable = () => {
     );
 
     const handlePageChange = (event, newPage) => {
-        setPage(newPage)
+        setPage(newPage);
     }
+
     const handleRowsPerPageChange = (event) => {
-        setRowsPerPage(parseInt(event.target.value,10))
-        setPage(0)
-    } 
+        setRowsPerPage(parseInt(event.target.value,10));
+        setPage(0);
+    }
     
     const dataAfterPagination = () => { 
         return data.slice(page*rowsPerPage, (page+1)*rowsPerPage)

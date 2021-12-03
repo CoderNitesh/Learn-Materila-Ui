@@ -1,8 +1,7 @@
 import React from 'react'
 import { TextField } from '@mui/material';
 
-const Input = ({label, value, name, onChange, errorText=null}) => {
-
+const Input = ({label, value, name, onChange, errorText=null, ...other}) => {
     const inputConfig = {
         variant: 'outlined',
         label,
@@ -10,7 +9,7 @@ const Input = ({label, value, name, onChange, errorText=null}) => {
         name,
         onChange
     }
-    return <TextField {...inputConfig} {...(errorText && {error:true, helperText:errorText})}/>
+    return <TextField {...inputConfig} {...other} {...(errorText && {error:true, helperText:errorText})}/>
 }
 
 export default Input

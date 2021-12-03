@@ -14,10 +14,11 @@ import Select from '../../components/control/Select'
 import CheckBox from '../../components/control/CheckBox';
 import DatePicker from '../../components/control/DatePicker';
 import Button from '../../components/control/Button';
-import { insertEmployee } from '../../utils/localStorageOpration';
+// import { insertEmployee } from '../../utils/localStorageOpration';
 
 // values
 const initalValues = {
+    id: 0,
     fullName: '',
     email: '',
     mobile: '',
@@ -42,8 +43,8 @@ const selectOptions = [
     {label: 'Android Devloper', value: 'android_devloper'},
 ]
 
-const EmployeesForm = () => {
-    const {values: employDetails, handleChange, errors, setErrors, resetForm} = useForm(initalValues, true)
+const EmployeesForm = ({recordForEdit, addOrEdit}) => {
+    const {values: employDetails, handleChange, errors, setErrors, resetForm} = useForm(recordForEdit || initalValues, true)
     
     const validate = () => {
         const error = {}
@@ -73,13 +74,12 @@ const EmployeesForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         if(validate(employDetails)){
-            console.log("Please fill the form")
+            console.error("Please fill the form")
         }else{
-            console.log(employDetails)
-            insertEmployee(employDetails)
-            resetForm();
+            addOrEdit(employDetails, resetForm)
         }
     }
+    // console.log(recordForEdit)
 
     return (
         <Form >
