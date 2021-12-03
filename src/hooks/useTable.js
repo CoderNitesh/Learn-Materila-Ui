@@ -47,7 +47,7 @@ const useTable = () => {
     const handleRowsPerPageChange = (event) => {
         setRowsPerPage(parseInt(event.target.value,10))
         setPage(0)
-    }
+    } 
     
     const dataAfterPagination = () => { 
         return data.slice(page*rowsPerPage, (page+1)*rowsPerPage)
@@ -69,7 +69,9 @@ const useTable = () => {
     return {
         TableContainer,
         TablePagination,
-        dataAfterPagination
+        dataAfterPagination,
+        page,
+        rowsPerPage
     }
 }
 

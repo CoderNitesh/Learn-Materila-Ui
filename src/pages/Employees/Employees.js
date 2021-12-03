@@ -21,7 +21,7 @@ import { makeStyles } from '@mui/styles';
 // data from localstorage
 import { getHeaders, getEmployees} from '../../utils/localStorageOpration'
 
-import * as _ from 'lodash'
+import _ from 'lodash';
 
 const useStyles = makeStyles(theme => ({
         employeeContainer: {
@@ -32,18 +32,25 @@ const useStyles = makeStyles(theme => ({
 )
 const Employees = () => {
     const [headers, setHeaders] = useState([]);
+    const [records, setRecords] = useState([]);
     const [order, setOrder] = useState('');
     const [orderBy, setOrderBy] = useState('');
     const {
         TableContainer, 
         TablePagination, 
-        dataAfterPagination
+        dataAfterPagination,
+        page,
+        rowsPerPage
     } = useTable();
 
     useEffect(() => {
-        // setRecords(dataAfterPagination)
+        setRecords(dataAfterPagination())
         setHeaders(getHeaders())
     },[])
+
+    useEffect(() => {
+        setRecords(dataAfterPagination())
+    },[page, rowsPerPage])
 
     const classes = useStyles();
 
@@ -56,11 +63,12 @@ const Employees = () => {
     }
 
     const handleSortingClick = (data) => {
-        const isAsc = orderBy === data && order === 'asc'
+        const dataLowerCase = data.charAt(0).toLowerCase() + data.slice(1);
+        const isAsc = orderBy === dataLowerCase && order === 'asc'
         setOrder(isAsc? 'desc': 'asc');
-        setOrderBy(data);
-        const sortedArray = _.orderBy(getEmployees(), 'fullName', isAsc? 'desc': 'asc')
-        console.log(sortedArray)
+        setOrderBy(dataLowerCase);
+        const sortedArray = _.orderBy(dataAfterPagination(), dataLowerCase, isAsc? 'desc': 'asc')
+        setRecords(sortedArray)
     }
 
     return (
@@ -94,7 +102,7 @@ const Employees = () => {
                     </TableHead>
                     <TableBody>
                         {
-                            dataAfterPagination().map(item => (
+                            records?.map(item => (
                                 <TableRow key={item.id}>
                                     <TableCell>{item.fullName}</TableCell>
                                     <TableCell>{item.email}</TableCell>
