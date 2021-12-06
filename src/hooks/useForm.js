@@ -1,16 +1,13 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@mui/styles';
 
-export const useForm = (initialValues, validateOnChange=false) => {
+export const useForm = (initialValues) => {
     const [values, setValues] = useState(initialValues);
     const [errors, setErrors] = useState({})
 
     const handleChange = (e) => {
         const {name, value} = e.target
         setValues({...values, [name]: value})
-        if(validateOnChange){
-            
-        }
     }
 
     const resetForm = () => {

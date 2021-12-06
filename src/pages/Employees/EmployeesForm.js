@@ -18,7 +18,6 @@ import Button from '../../components/control/Button';
 
 // values
 const initalValues = {
-    id: 0,
     fullName: '',
     email: '',
     mobile: '',

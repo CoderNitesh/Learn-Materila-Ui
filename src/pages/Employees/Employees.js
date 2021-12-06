@@ -21,14 +21,16 @@ import { InputAdornment, Paper,TableBody, TableCell, TableHead, TableRow, TableS
 import Input from '../../components/control/Input'
 import Button from '../../components/control/Button'
 import Popup from '../../components/Popup';
+import Notification from '../../components/Notification'
 
 // css
 import { makeStyles } from '@mui/styles';
 
 // data from localstorage
-import { insertEmployee,getHeaders, updateEmployee} from '../../utils/localStorageOpration'
+import { insertEmployee,getHeaders, updateEmployee, deleteEmployee} from '../../utils/localStorageOpration'
 
 import _ from 'lodash';
+import ConfirmDialog from '../../components/ConfirmDialog';
 
 const useStyles = makeStyles(theme => ({
         employeeContainer: {
@@ -60,6 +62,8 @@ const Employees = () => {
     const [searchRecords, setSearchRecords] = useState([]);
     const [order, setOrder] = useState('');
     const [orderBy, setOrderBy] = useState('');
+    const [notify, setNotify] = useState({isOpen: false, message: '', type: ''})
+    const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: '', subTitle:''})
 
     const {
         TableContainer, 
@@ -82,24 +86,33 @@ const Employees = () => {
         setRecords(dataAfterPagination())
     },[editRecord])
 
+    useEffect(() => {
+        setRecords(dataAfterPagination())
+    }, [notify])
+
     const handleEdit = (record) => {
         setEditRecord(record)
         setOpenPopup(true);
     }
     const addOrEdit = (employDetails,resetForm) => {
-        if(employDetails.id === 0){
+        if(!employDetails.hasOwnProperty('id')){
             insertEmployee(employDetails);
+            setNotify({isOpen: true, message: 'Employee Added...!', type:'success'})
         }
         else{
             updateEmployee(employDetails)
             setEditRecord({});
+            setNotify({isOpen: true, message: 'Employee Updated...!', type:'success'})
         }
         setOpenPopup(false)
         resetForm();
+
     }
 
-    const handleDelete = () => {
-        console.log('Delete hit...!');
+    const handleDelete = item => {
+        setConfirmDialog({isOpen: false, ...confirmDialog})
+        deleteEmployee(item);
+        setNotify({isOpen: true, message: 'Employee Deleted...!', type:'error'})
     }
 
     const handleSearch = (e) => {
@@ -119,7 +132,6 @@ const Employees = () => {
         const sortedArray = _.orderBy(dataAfterPagination(), dataLowerCase, isAsc? 'desc': 'asc')
         setRecords(sortedArray)
     }
-
     return (
         <>
             <PageHeader
@@ -182,7 +194,18 @@ const Employees = () => {
                                             <EditIcon onClick={() => handleEdit(item)} color='secondary'/>
                                         </TableCell>
                                         <TableCell>
-                                            <DeleteIcon onClick={handleDelete} color='secondary' />
+                                            <DeleteIcon 
+                                                onClick={() => {
+                                                    setConfirmDialog({
+                                                        isOpen: true, 
+                                                        title: 'Are you sure to Delete', 
+                                                        subTitle: "You can't undo this opreation", 
+                                                        onConfirm: ()=> {handleDelete(item)}
+                                                    })
+                                                } 
+                                                }
+                                                color='secondary'
+                                            />
                                         </TableCell>
                                     </TableRow>
                                 ))
@@ -201,6 +224,11 @@ const Employees = () => {
                     addOrEdit = {addOrEdit}
                 />
             </Popup>
+            <Notification notify={notify} setNotify={setNotify} />
+            <ConfirmDialog 
+                confirmDialog={confirmDialog}
+                setConfirmDialog={setConfirmDialog}
+            />
         </>
     )
 }

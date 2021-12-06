@@ -16,6 +16,12 @@ export const updateEmployee = (data) => {
     localStorage.setItem(KEYS.employees, JSON.stringify(employees));
 }
 
+export const deleteEmployee = (item) => {
+    const employees = getEmployees();
+    const remaningEmployee = employees.filter(x => x.id !== item.id)
+    localStorage.setItem(KEYS.employees, JSON.stringify(remaningEmployee))
+}
+
 export const getEmployees = () => {
     if(localStorage.getItem(KEYS.employees) == null)
         localStorage.setItem(KEYS.employees, JSON.stringify([]))
